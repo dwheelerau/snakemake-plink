@@ -29,7 +29,7 @@ rule clean:
 rule all:
     input:
         expand("{path}", path=geno_file),
-        "tmp.map"
+        "plinkdata.bed"
 
 #"plinkdata.ped",
 rule load_data:
@@ -59,18 +59,14 @@ rule fix_snp_ids:
         cp {output} {input}
         echo 'Map file now looks like this' | tee -a {log} 
         head -n5 {input} | tee -a {log}
-        touch {output} 
+        touch {output}
         """
 
 ## this converts the files to binary for fast acccess
-#rule make_bed:
-#    input:
-#         ped=plinkdataIds.ped,
-#    output:
-#        plinkdataIds.bed
-#    log: "logs/convert_to_bed.log"
-#    shell:
-#        """
-#        plink --make-bed --file plinkdataIds --allow-no-sex \
-#            --keep-allele-order 2>&1 | tee -a {log}
-#        """
+rule make_bed:
+    input: "tmp.map"
+    output: "plinkdata.bed"
+    log: "logs/convert_to_bed.log"
+    shell:
+        "plink --make-bed --file plinkdata --allow-no-sex "
+        "--keep-allele-order --out plinkdata 2>&1 | tee -a {log}"
