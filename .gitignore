@@ -1,0 +1,8 @@
+*/
+/*
+!.gitignore
+!scripts/
+!envs/
+!README.md
+!Snakefile
+!config.yaml

@@ -1,0 +1,19 @@
+# CONFIG file for snakemake plink pipeline
+#
+#
+## General params
+THREADS: 2
+
+# name of VCF file
+GENO: ""
+
+# name of phenotype file
+PHENO: ""
+
+# Filtering paramaters, these are taken from the sample qc
+## Minor allele freq cut-off, will filter values BELOW this number
+# MAF
+## Allow missing genotypes, this is the cut-off, bigger keeps more SNPs
+# geno
+## Missing data filter, datawide, as gets bigger keeps more individuals
+# mind
