@@ -5,10 +5,10 @@
 THREADS: 2
 
 # name of VCF file
-GENO: ""
+GENO: "combined.freebayes.p1.annot.q30.chmrename.vcf"
 
 # name of phenotype file
-PHENO: ""
+PHENO: "trait_dot_plink.txt"
 
 # Filtering paramaters, these are taken from the sample qc
 ## Minor allele freq cut-off, will filter values BELOW this number
