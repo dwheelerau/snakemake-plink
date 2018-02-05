@@ -10,12 +10,10 @@ now = datetime.now().strftime('%Y-%m-%d-%H-%M')
 date_string = "{}".format(now)
 
 # genotype and phenotype file paths
-geno_file = os.path.join(DIRS[0], config['GENO'])
+geno_file = os.path.join(DIRS[0], config['GENOTYPES'])
 pheno_file = os.path.join(DIRS[2], config['PHENO'])
 print(geno_file)
 print(pheno_file)
-
-THREAD = config['THREADS']
 
 rule setup:
     output: DIRS
@@ -24,12 +22,17 @@ rule setup:
 
 rule clean:
     shell:
-        "rmdir --ignore-fail-on-non-empty "+' '.join(DIRS)
+        """
+        rm -f plinkdata*
+        rm -f logs/*
+        rm -f tmp.map
+        rm -f *.png
+        """
 
 rule all:
     input:
         expand("{path}", path=geno_file),
-        "plinkdata.bed"
+        "plinkdataFiltered.bed"
 
 #"plinkdata.ped",
 rule load_data:
@@ -67,6 +70,42 @@ rule make_bed:
     input: "tmp.map"
     output: "plinkdata.bed"
     log: "logs/convert_to_bed.log"
+    threads: config['THREADS']
     shell:
         "plink --make-bed --file plinkdata --allow-no-sex "
         "--keep-allele-order --out plinkdata 2>&1 | tee -a {log}"
+
+rule report_stats:
+    input: "plinkdata.bed"
+    output: "plinkdata.frq"
+    shell:
+        "plink --bfile plinkdata --freq --missing --het "
+        " --allow-no-sex --out plinkdata"
+
+rule make_graphs:
+    input: "plinkdata.frq"
+    output: "missing_snp_genotypes.png"
+    shell:
+        """
+        Rscript scripts/qc_graphs.R
+        echo 'Please check QC data and set filtering params'
+        echo 'in config file'
+        """
+
+# --hwe
+rule filter:
+    input: "missing_snp_genotypes.png"
+    output: "plinkdataFiltered.bed"
+    log: "logs/filter.log"
+    params:
+        MAF=config['MAF'],
+        GENO=config['GENO'],
+        MIND=config['MIND']
+    shell:
+        "plink --bfile plinkdata --allow-no-sex --keep-allele-order "
+        "--maf {params.MAF} --geno {params.GENO} --mind {params.MIND} "
+        "--make-bed --out plinkdataFiltered 2>&1 | tee {log}"
+
+onerror:
+    print("If the filter rule fails then please check the config file")
+    print("and make sure sensible values for maf, geno, and mind are set")

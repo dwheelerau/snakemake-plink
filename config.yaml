@@ -5,15 +5,22 @@
 THREADS: 2
 
 # name of VCF file
-GENO: "combined.freebayes.p1.annot.q30.chmrename.vcf"
+GENOTYPES: "combined.freebayes.p1.annot.q30.chmrename.vcf"
 
 # name of phenotype file
 PHENO: "trait_dot_plink.txt"
 
-# Filtering paramaters, these are taken from the sample qc
-## Minor allele freq cut-off, will filter values BELOW this number
-# MAF
-## Allow missing genotypes, this is the cut-off, bigger keeps more SNPs
-# geno
-## Missing data filter, datawide, as gets bigger keeps more individuals
-# mind
+# this command filters the VCF files
+# #--maf 0.02: only INCLUDE SNPs with MAF >= value
+# #--geno 0.05: INCLUDE only SNPs with 95% genotyping rate (5% missing)
+# #--geno 0.1: INCLUDE only SNPs with 90% genotyping rate (10% missing)
+# #--mind 0.1: EXCLUDE SAMPLES (ie indiv) with MISSING genotypes GREATER than
+# 10%
+# #--hwe 0.00001: EXCLUDE SNPs with HW p-values < this cutoff
+#MAF: ""
+#GENO: ""
+#MIND: ""
+MAF: "0.02"
+MIND: "0.05"
+GENO: "0.05"
+#HWE:
