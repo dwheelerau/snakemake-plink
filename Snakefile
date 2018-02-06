@@ -200,7 +200,7 @@ rule cluster_perm:
     shell:
         """
         plink --bfile plinkdataFiltered --assoc --within {input} \
-            --adjust --out assoc3 --allow-no-sex --perm
+            --adjust --out assoc3 --allow-no-sex --perm 2>&1 | tee {log}
         cat assoc3.qassoc | tr -s ' ' '\t' > results/assoc3.qassoc.tsv
         cat assoc3.qassoc.adjusted | tr -s ' ' '\t' > results/assoc3.qassoc.adjusted.tsv
         cat assoc3.qassoc.perm | tr -s ' ' '\t' > results/assoc3.qassoc.perm.tsv

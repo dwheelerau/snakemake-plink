@@ -20,15 +20,18 @@ conda --name plink --file envs/plink.yaml
 5. Add the pheno and geno filenames (don`t append path) to the ```config.yaml``` file.
 
 6. Run the pipeline to generate QC stats from the vcf.  
-```snakemake all --cores 2```
+```snakemake qc --cores 2```
 
 7. The pipeline will generate quality stats and plots, check these files before setting
    the filtering variables in the ```config.yaml``` file.  
 
-8. After adding filtering paramaters restart the pipeline  
-```snakemake all --cores 2```
+8. After adding filtering paramaters, filter  
+```snakemake filter_snps --cores 2```
 
-9. The final results are in ```results/```.  
+9. Finally run the assoc.  
+```snakemake assoc --cores 2```
+
+The final results are in  ```results``` and ```plots```, also check logs!  
 
 10. To cleanup (deletes all output).  
 ```snakemake clean```
@@ -49,4 +52,9 @@ USA USA 33.33
 ```  
 Here the `dot` is the phenotype heading, only include one phenotype. The IID
 and FID are family and individual IDs. This pipeline is only setup for
-unrelated indiv at this stage, so the FID and IID can be the same.
+unrelated indiv at this stage, so the FID and IID can be the same.  
+
+### snakemake all
+This rule is available but will stop unless values are added to the config file
+for the filtering; useful if you are repeating analysis where you already know
+these values in advance.
