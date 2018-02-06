@@ -71,7 +71,7 @@ SIDAK_SD - single step adjusted pvalues
 FDR_BH - Benjamini + Hochberg steup FDR (1995)  
 FDR_BY - Benjamini + Yekutieli (2001)  
 
-```assoc1.qassoc.tsv```
+```assoc1.qassoc.tsv```  
 NMISS - number of no missing individuals  
 BETA - Regression Coef  
 SE - Standard error of the coef  
