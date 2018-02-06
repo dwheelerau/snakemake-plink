@@ -58,3 +58,36 @@ unrelated indiv at this stage, so the FID and IID can be the same.
 This rule is available but will stop unless values are added to the config file
 for the filtering; useful if you are repeating analysis where you already know
 these values in advance.
+
+### Table headings (that are not obvious)   
+```assoc1.qassoc.adjusted.tsv```  
+UNADJ - unadj signif  
+GC - Genomic control adusted signif (not multiple testing correction)   
+QQ - QQ plot value  
+BONF - Bonferroni adjusted pvalues  
+HOLM - Holm step-down adjusted pvalues  
+SIDAK_SS - single step adjusted pvalues 
+SIDAK_SD - single step adjusted pvalues  
+FDR_BH - Benjamini + Hochberg steup FDR (1995)  
+FDR_BY - Benjamini + Yekutieli (2001)  
+
+```assoc1.qassoc.tsv```
+NMISS - number of no missing individuals  
+BETA - Regression Coef  
+SE - Standard error of the coef  
+R2 - The regression R2 (multiple correlation coefficient)  
+T - t-stat for regression of phenotpe on allele count  
+P - Asymptotic significance value for coef  
+
+```assoc2.assoc.linear.tsv```  
+A1 - Tested Allele (minor by default, can be changed with --keep-allele-order  
+TEST - code for test, by default additive  
+NMISS - number of non-missing indiv  
+BETA - Regression coef  
+STAT - coef of the t-stat  
+P - Asymptopic p-value of the t-statistic  
+
+```assoc3.qassoc.perm.tsv```  
+EMP1 - Ascend sort this, emprical p-value, smaller better  
+NP - number of permiations performed. Can be NA if not going to be
+significant.  
