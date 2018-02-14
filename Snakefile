@@ -121,6 +121,10 @@ rule make_graphs:
         Rscript scripts/qc_graphs.R  2>&1 | tee {log}
         echo 'Please check QC data and set filtering params'
         echo 'in config file'
+        Rscript scripts/het_script.R plinkdata.imiss \
+            plinkdata.het plots/callrate.pdf plots/meanhet.pdf
+        Rscript scripts/plot_snp_freq.R plinkdata.imiss \
+            plots/SNP_distribution_indiv.pdf
         """
 
 # --hwe
@@ -194,7 +198,9 @@ rule cluster:
 
 rule cluster_perm:
     input: "str1.cluster2"
-    output: "results/assoc3.qassoc.adjusted.tsv"
+    output:
+        result="results/assoc3.qassoc.adjusted.tsv",
+        manhattan="plots/assoc3.qassoc_man.png"
     log: "logs/clustering_perm.log"
     threads: config['THREADS']
     shell:
@@ -204,6 +210,7 @@ rule cluster_perm:
         cat assoc3.qassoc | tr -s ' ' '\t' > results/assoc3.qassoc.tsv
         cat assoc3.qassoc.adjusted | tr -s ' ' '\t' > results/assoc3.qassoc.adjusted.tsv
         cat assoc3.qassoc.perm | tr -s ' ' '\t' > results/assoc3.qassoc.perm.tsv
+        Rscript scripts/manhattan.R assoc3.qassoc {output.manhattan}
         """
 
 onerror:
